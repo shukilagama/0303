@@ -66,7 +66,14 @@ public class TimeService {
     public Response getUser(){
         return Response.status(Response.Status.OK).entity(SecurityUtils.getSubject().getPrincipal()).build();
     }
-
+    public List<YunUsers> getYunDeptUserList(@QueryParam("deptId") String deptId){
+        String hql = " from YunUsers as yu where 1=1 ";
+        if(deptId!=null && !"".equals(deptId)){
+            hql += " and yu.deptId = '" + deptId+"'";
+        }
+        List<YunUsers> yunUsersList = baseFacade.createQuery(YunUsers.class,hql, new ArrayList<Object>()).getResultList();
+        return yunUsersList;
+    }
       @GET
     @Path("get-table")
     @RequiresPermissions("user:view")
