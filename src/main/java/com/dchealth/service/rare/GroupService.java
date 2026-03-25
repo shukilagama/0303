@@ -59,7 +59,14 @@ public class TimeService {
     public Response userLogin(){
         return Response.status(Response.Status.OK).entity("dengluchenggong").build();
     }
-
+  public ResponseEntity<CRAPIResponse> addVehicle(
+      @Valid @RequestBody VehicleForm vehicleDetails, HttpServletRequest request) {
+    CRAPIResponse checkVehicleResponse = vehicleService.checkVehicle(vehicleDetails, request);
+    if (checkVehicleResponse != null && checkVehicleResponse.getStatus() == 200) {
+      return ResponseEntity.status(HttpStatus.OK).body(checkVehicleResponse);
+    }
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(checkVehicleResponse);
+  }
     @GET
     @Path("get-user")
     @RequiresPermissions("user:view")
